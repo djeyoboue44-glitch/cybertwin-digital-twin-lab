@@ -80,19 +80,45 @@ En **architecture durcie**, trois barrières s'ajoutent. La **segmentation** : l
 
 Pour le tester, j'ai aussi ajouté dans l'automate le mode caché qui fige la puissance (registre 100 à 2), puis j'ai arrêté le ventilateur. La vitesse réelle est tombée, mais la puissance est restée figée à 6,2 kW : les deux ne sont plus cohérentes, et mon détecteur se déclenche. Il attrape ainsi une attaque qu'aucune règle d'origine ne voyait. Le code se trouve dans `detecteur_puissance_vitesse.py`.
 
-## Aperçu en images
+## Parcours illustré
 
-Sabotage de la consigne sur le réseau plat (A2) : la consigne passe à 30 °C, la température grimpe, le jumeau alerte mais ne peut pas nommer l'auteur.
+### Phase 1 : démarrer et observer la normalité
+
+Le tableau de bord du jumeau en fonctionnement normal. La mesure (trait plein) et le modèle (pointillés) se suivent de près : le modèle est fidèle. L'IA apprend la normalité.
+
+![Tableau de bord, fonctionnement normal](docs/img/fig10_etape10_apprend.png)
+
+### Phase 2 : attaquer le réseau plat
+
+Sabotage de la consigne (A2) : la consigne passe à 30 °C, la température grimpe, le jumeau alerte mais ne peut pas nommer l'auteur.
 
 ![Attaque A2 sur le réseau plat](docs/img/fig04_etape7_a2.png)
 
-Capteur figé (A4) derrière la passerelle : la mesure reste plate, le modèle monte, et six détecteurs démasquent le mensonge en même temps.
+Arrêt du ventilateur (A3) : la surpression des deux salles plonge sous la ligne des 10 Pa, avec un risque d'aérocontamination. On voit en vrai ce que la simulation avait prédit.
+
+![Attaque A3, perte de la surpression](docs/img/fig05_etape7_a3.png)
+
+### Phase 3 : observer avec la passerelle
+
+La reconnaissance (A1) balaie les 128 registres de l'automate et découvre le registre caché 100.
+
+![Reconnaissance et registre caché](docs/img/fig07_etape8_a1.png)
+
+Capteur figé (A4) derrière la passerelle : la mesure reste plate, le modèle monte, et six détecteurs démasquent le mensonge en même temps, sur trois couches différentes.
 
 ![Attaque A4, le capteur ment mais le jumeau voit](docs/img/fig09_etape9_a4.png)
+
+### Phase 4 : intelligence artificielle
 
 L'attaque que seule l'IA voit (A6) : un décalage de 0,6 °C passe sous toutes les règles fixes, mais sort du profil appris par l'IA, qui alerte.
 
 ![L'IA détecte le décalage discret](docs/img/fig11_etape11_ia_anormal.png)
+
+Protection par modèle validé et signé : un fichier de modèle modifié est refusé au chargement, car son empreinte ne correspond plus.
+
+![Modèle IA falsifié, chargement refusé](docs/img/fig14_etape12_signature.png)
+
+### Phase 5 : protéger
 
 Architecture durcie : attaque directe refusée, attaque par la passerelle bloquée, et même une consigne dangereuse de l'opérateur légitime est refusée par la sûreté locale.
 
