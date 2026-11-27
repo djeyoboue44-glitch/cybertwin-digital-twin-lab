@@ -18,6 +18,32 @@ Ce lab construit, puis attaque, le **jumeau numérique** de la centrale de trait
 2. **L'IA complète les règles, mais a ses limites.** Une détection apprise repère les attaques trop discrètes pour les règles fixes. En revanche elle est vulnérable à l'empoisonnement de son apprentissage, d'où l'intérêt d'un modèle validé hors ligne et signé.
 3. **Détecter ne suffit pas, il faut protéger.** Tant qu'une attaque réussit, le danger demeure. La segmentation, le filtrage applicatif et la sûreté locale transforment la détection en protection, et couvrent même l'erreur humaine.
 
+## Aperçu
+
+Sabotage de la consigne sur le réseau plat (A2) : la consigne passe à 30 °C, le jumeau alerte mais ne peut pas nommer l'auteur.
+
+![Attaque A2 sur le réseau plat](docs/img/fig04_etape7_a2.png)
+
+Capteur figé (A4) derrière la passerelle : la mesure reste plate, le modèle monte, et six détecteurs démasquent le mensonge en même temps.
+
+![Attaque A4, le capteur ment mais le jumeau voit](docs/img/fig09_etape9_a4.png)
+
+L'attaque que seule l'IA voit (A6) : un décalage de 0,6 °C passe sous toutes les règles fixes, mais sort du profil appris par l'IA.
+
+![L'IA détecte le décalage discret](docs/img/fig11_etape11_ia_anormal.png)
+
+Architecture durcie : attaque directe refusée, attaque par la passerelle bloquée, et même une consigne dangereuse de l'opérateur légitime est refusée par la sûreté locale.
+
+![Les trois barrières du durcissement](docs/img/fig16_etape13_essais.png)
+
+Mon détecteur de cohérence puissance / vitesse en action (étape 14) : il attrape une attaque qu'aucune règle d'origine ne voyait.
+
+![Mon détecteur se déclenche](docs/img/fig18_etape14_incoherence.png)
+
+Vérification automatique finale : les seize contrôles passent sur les trois architectures et sur l'IA.
+
+![Test de bout en bout, 16 sur 16](docs/img/fig19_etape15_test.png)
+
 ## Les attaques jouées
 
 | Code | Attaque | Ce qu'elle exploite |
